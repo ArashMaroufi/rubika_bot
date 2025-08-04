@@ -23,7 +23,7 @@ def receive_update():
     print("📩 Received data:", data)
 
     if not data:
-        print("⚠️ Warning: Received empty JSON!")
+        print("⚠️ Warning: Received empty JSON!!")
         return "No data", 400
 
     # سعی می‌کنیم chat_id و متن پیام رو استخراج کنیم
