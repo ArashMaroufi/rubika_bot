@@ -27,7 +27,14 @@ def home():
 @app.route('/receiveUpdate', methods=['POST'])
 def receive_update():
     data = request.get_json()
-    print("📩 receiveUpdate:", data)
+    print("📩 پیام دریافتی از کاربر:", data)
+    try:
+        text = data['inline_message']['text']
+        sender = data['inline_message']['sender_id']
+        print(f"👤 کاربر {sender} فرستاده: {text}")
+    except Exception as e:
+        print("⚠️ مشکلی در خواندن پیام:", e)
+    # return 'OK', 200
 
     # inline_msg = data.get("inline_message")
     # if inline_msg:
