@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import os
+# import os
 import requests
 
 app = Flask(__name__)
@@ -7,16 +7,16 @@ app = Flask(__name__)
 BOT_TOKEN = "BIABH0NLKZETIEBOCAMXQAEJEPAZMVMEPONHMEHNVXGHRPLRVJQTTAQECKNOKELX"
 
 
-def send_message(chat_id, text):
-    url = f"https://botapi.rubika.ir/v3/{BOT_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-    }
-    response = requests.post(url, json=payload)
-    print("🔵 SendMessage Status:", response.status_code)
-    print("🔵 SendMessage Response:", response.text)
-    return response.json()
+# def send_message(chat_id, text):
+#     url = f"https://botapi.rubika.ir/v3/{BOT_TOKEN}/sendMessage"
+#     payload = {
+#         "chat_id": chat_id,
+#         "text": text,
+#     }
+#     response = requests.post(url, json=payload)
+#     print("🔵 SendMessage Status:", response.status_code)
+#     print("🔵 SendMessage Response:", response.text)
+#     return response.json()
 
 
 @app.route("/", methods=["GET"])
@@ -29,29 +29,29 @@ def receive_update():
     data = request.get_json()
     print("📩 receiveUpdate:", data)
 
-    inline_msg = data.get("inline_message")
-    if inline_msg:
-        chat_id = inline_msg.get("chat_id")
-        text = inline_msg.get("text")
-        send_message(chat_id, f"شما فرستادید: {text}")
+    # inline_msg = data.get("inline_message")
+    # if inline_msg:
+    #     chat_id = inline_msg.get("chat_id")
+    #     text = inline_msg.get("text")
+    #     send_message(chat_id, f"شما فرستادید: {text}")
 
     return jsonify({"ok": True})
 
 
-@app.route("/receiveInlineMessage", methods=["POST"])
-def receive_inline():
-    data = request.get_json()
-    print("📩 receiveInlineMessage:", data)
+# @app.route("/receiveInlineMessage", methods=["POST"])
+# def receive_inline():
+#     data = request.get_json()
+#     print("📩 receiveInlineMessage:", data)
 
-    update = data.get("update", {})
-    new_msg = update.get("new_message", {})
-    chat_id = update.get("chat_id")
-    text = new_msg.get("text")
+#     update = data.get("update", {})
+#     new_msg = update.get("new_message", {})
+#     chat_id = update.get("chat_id")
+#     text = new_msg.get("text")
 
-    if chat_id and text:
-        send_message(chat_id, f"✅ پیام شما دریافت شد: {text}")
+#     if chat_id and text:
+#         send_message(chat_id, f"✅ پیام شما دریافت شد: {text}")
 
-    return jsonify({"ok": True})
+#     return jsonify({"ok": True})
 
 
 if __name__ == "__main__":
