@@ -1,4 +1,5 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
+import os
 import requests
 
 app = Flask(__name__)
@@ -10,47 +11,48 @@ def send_message(chat_id, text):
     url = f"https://botapi.rubika.ir/v3/{BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": chat_id,
-        "text": text
+        "text": text,
     }
     response = requests.post(url, json=payload)
     print("🔵 SendMessage Status:", response.status_code)
     print("🔵 SendMessage Response:", response.text)
+    return response.json()
+
+
+@app.route("/", methods=["GET"])
+def home():
+    return "✅ Rubika bot is running!", 200
 
 
 @app.route('/receiveUpdate', methods=['POST'])
 def receive_update():
-    data = request.json
-    print("📩 Received data:", data)
+    data = request.get_json()
+    print("📩 receiveUpdate:", data)
 
-    if not data:
-        print("⚠️ Warning: Received empty JSON!!")
-        return "No data", 400
+    inline_msg = data.get("inline_message")
+    if inline_msg:
+        chat_id = inline_msg.get("chat_id")
+        text = inline_msg.get("text")
+        send_message(chat_id, f"شما فرستادید: {text}")
 
-    # سعی می‌کنیم chat_id و متن پیام رو استخراج کنیم
-    message = data.get("event_data")
-    if not message:
-        print("⚠️ Warning: 'message' field missing in data!")
-        return "No message field", 400
+    return jsonify({"ok": True})
 
-    chat_id = message.get("chat_id")
-    text = message.get("text")
 
-    print(f"➡️ chat_id: {chat_id}")
-    print(f"➡️ text: {text}")
+@app.route("/receiveInlineMessage", methods=["POST"])
+def receive_inline():
+    data = request.get_json()
+    print("📩 receiveInlineMessage:", data)
+
+    update = data.get("update", {})
+    new_msg = update.get("new_message", {})
+    chat_id = update.get("chat_id")
+    text = new_msg.get("text")
 
     if chat_id and text:
-        reply_text = f"پیام شما: {text}"
-        send_message(chat_id, reply_text)
-    else:
-        print("⚠️ chat_id یا text موجود نیست!")
+        send_message(chat_id, f"✅ پیام شما دریافت شد: {text}")
 
-    return "OK", 200
-
-
-@app.route('/')
-def home():
-    return "Rubika bot is running!"
+    return jsonify({"ok": True})
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=10000)
+    app.run(debug=True)
