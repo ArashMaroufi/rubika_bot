@@ -27,7 +27,7 @@ def receive_update():
         return "No data", 400
 
     # سعی می‌کنیم chat_id و متن پیام رو استخراج کنیم
-    message = data.get("message")
+    message = data.get("event_data")
     if not message:
         print("⚠️ Warning: 'message' field missing in data!")
         return "No message field", 400
