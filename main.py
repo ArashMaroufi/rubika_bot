@@ -26,27 +26,15 @@ def index():
 
 @app.route('/receiveUpdate', methods=['POST'])
 def receive_update():
-    data = request.get_json()
-    print("📩 پیام دریافتی از کاربر:")
-    print(data)
-    if data and 'message' in data:
-        text = data['message'].get('text', '')
-        sender_id = data['message'].get('sender_id', '')
-        print(f"📨 پیام از {sender_id}: {text}")
+    print("🔔 درخواست POST دریافت شد")
 
-    # try:
-    #     text = data['inline_message']['text']
-    #     sender = data['inline_message']['sender_id']
-    #     print(f"👤 کاربر {sender} فرستاده: {text}")
-    # except Exception as e:
-    #     print("⚠️ مشکلی در خواندن پیام:", e)
-    # return 'OK', 200
-
-    # inline_msg = data.get("inline_message")
-    # if inline_msg:
-    #     chat_id = inline_msg.get("chat_id")
-    #     text = inline_msg.get("text")
-    #     send_message(chat_id, f"شما فرستادید: {text}")
+    try:
+        data = request.get_json(force=True)
+        print("📩 داده دریافتی:")
+        print(data)
+    except Exception as e:
+        print("❌ خطا در خواندن JSON:")
+        print(e)
 
     return "OK", 200
 
