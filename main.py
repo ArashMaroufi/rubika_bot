@@ -29,6 +29,11 @@ def receive_update():
     data = request.get_json()
     print("📩 پیام دریافتی از کاربر:")
     print(data)
+    if data and 'message' in data:
+        text = data['message'].get('text', '')
+        sender_id = data['message'].get('sender_id', '')
+        print(f"📨 پیام از {sender_id}: {text}")
+
     # try:
     #     text = data['inline_message']['text']
     #     sender = data['inline_message']['sender_id']
