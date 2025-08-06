@@ -18,7 +18,7 @@
 import requests
 
 url = "https://rubika-bot-spz2.onrender.com/receiveUpdate"
-
+# BOT_TOKEN = "BJAIE0CCEQHJEQYDFOATWSRHEJWBSONBYQWJMXNJYRHYULEGNMFEVKXGMGMPSGDK"
 payload = {
     "inline_message": {
         "sender_id": "test-user",
